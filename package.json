@@ -1,0 +1,12 @@
+{
+  "name": "react-flux-contact-manager",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "devDependencies": {
+    "bootstrap": "^3.3.6",
+    "flux": "^2.1.1",
+    "jquery": "^2.1.4",
+    "react": "^0.14.3"
+  }
+}
