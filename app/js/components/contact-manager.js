@@ -1,17 +1,33 @@
-/**
- * Created by vladimir on 28.12.15.
- */
-var ContactManager=React.createClass({
+var ContactManager = React.createClass({
 
     getInitialState: function () {
 
-        return {message:"blabla"};
+        return this._getStateFromStor();
+    },
+    _getStateFromStor(){
+        return {
+            contacts: ContactStore.getContacts(),
+            currentContact:ContactStore.getCurrentContact(),
+            currentViewType:ContactStore.getCurrentViewType()
+        }
     },
 
-    render: function() {
+    render(){
         return (
-            <h1>{this.state.message+afdsafds}</h1>
+            <div>
+                <Header text={'Cool contact manager'}/>
+
+                <div className='container'>
+                    <div className='list-view-wrapper'>
+                        <ContantList contacts={this.state.contacts} />
+                    </div>
+                    <div className='detail-view-wrapper'>
+                        <ContactDetailView
+                            contact={this.state.currentState}
+                            viewType={this.state.currentViewType}/>
+                    </div>
+                </div>
+            </div>
         )
     }
 });
-window.ContactManager = ContactManager;

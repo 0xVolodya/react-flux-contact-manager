@@ -1,0 +1,94 @@
+.media-object {
+    width: 64px;
+    height: 64px;
+    border-radius: 65px;
+    float: left;
+    margin-right: 15px;
+}
+
+.media-heading {
+    text-align: left;
+}
+
+.media {
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.media:first-child {
+    margin-top: 15px;
+}
+
+.media:hover {
+    background: #E8E8E8;
+    cursor: pointer;
+}
+
+.btn-outline {
+    color: #563d7c;
+    background-color: transparent;
+    border-color: #563d7c;
+}
+
+.btn-outline:hover {
+    color: #fff;
+    background-color: #563d7c;
+    border-color: #563d7c;
+}
+
+.main-container {
+    width: 100%;
+    position: relative;
+}
+
+.list-view-wrapper,
+.detail-view-wrapper {
+    float: left;
+    height: 100%;
+    transition: left 0.5s ease;
+}
+
+.list-view-wrapper {
+    width: 33%;
+}
+.detail-view-wrapper {
+    width: 67%;
+    padding-left: 15px;
+}
+.detail-view-wrapper>div {
+    background: white;
+}
+
+@media(min-width:768px) {
+    .detail-view-wrapper .btn-toolbar #back {
+        display: none;
+    }
+}
+
+@media(max-width:768px) {
+    .list-view-wrapper,
+    .detail-view-wrapper {
+        float: left;
+        position: absolute;
+        width: 100%;
+    }
+
+    .detail-view-wrapper {
+        left: 100%;
+    }
+
+    .main-container.show-details .list-view-wrapper {
+        display: none;
+    }
+    .main-container.show-details .detail-view-wrapper {
+        left: 0;
+        padding: 0;
+    }
+}
+
+.contract-form {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 15px;
+    margin-top: 15px;
+}
