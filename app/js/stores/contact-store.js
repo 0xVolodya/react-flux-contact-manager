@@ -13,7 +13,7 @@ var ContactStore = (function ($, Dispatcher, ContactManagerConstants) {
     };
 
     var _contacts = [],
-        _currentViewType=VIEW_TYPES.LIST,
+        _currentViewType = VIEW_TYPES.LIST,
         _currentId;
 
     function _init(contacts) {
@@ -25,14 +25,24 @@ var ContactStore = (function ($, Dispatcher, ContactManagerConstants) {
         var c;
 
         _contacts.forEach(function (contact) {
-            if(_currentId===contact.id){
-                c=contact;
+            if (_currentId === contact.id) {
+                c = contact;
             }
         });
         return c;
     }
-    function getCurrentViewType(){
+
+    function getCurrentViewType() {
         return _currentViewType;
+    }
+
+    function _random(min, max) {
+        if (max == null) {
+            max = min;
+            min = 0;
+        }
+        return min + Math.floor(Math.random() * (max - min + 1));
+
     }
 
     function _createContactObject(contact) {
@@ -41,18 +51,39 @@ var ContactStore = (function ($, Dispatcher, ContactManagerConstants) {
             name: contact.name,
             tel: contact.tel,
             email: contact.email,
-            avatar: '1.jpg'
+            avatar: _random(1, 10) + '.jpg'
         }
     }
 
     dispatchToken = Dispatcher.register(function (action) {
         var contact;
-        console.log(action);
+        console.log(action.type === actionTypes.DESTROY_CONTACT);
         switch (action.type) {
             case actionTypes.RECEIVE_INITIAL_PAYLOAD:
                 _init(action.data);
                 emitChange();
                 break;
+            case actionTypes.CLICK_DELETE:
+                _currentViewType = VIEW_TYPES.LIST;
+                emitChange();
+                break;
+            case actionTypes.DESTROY_CONTACT:
+                _contacts.forEach(function (contact, index) {
+                    console.log(action.id+ ' '+contact.id);
+
+                    if (action.id === contact.id) {
+                        console.log(_contacts.length);
+                        _contacts.splice(index, 1);
+
+                    }
+                });
+                console.log(_contacts[0].id);
+
+                _currentId = _contacts[0].id;
+                emitChange();
+                break;
+
+
         }
     });
     function emitChange() {
@@ -77,8 +108,8 @@ var ContactStore = (function ($, Dispatcher, ContactManagerConstants) {
         emitChange: emitChange,
         getContacts: getContacts,
         dispatchToken: dispatchToken,
-        getCurrentContact:getCurrentContact,
-        getCurrentViewType:getCurrentViewType
+        getCurrentContact: getCurrentContact,
+        getCurrentViewType: getCurrentViewType
 
     }
 }($, Dispatcher, ContactManagerConstants));

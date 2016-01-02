@@ -1,7 +1,6 @@
 var ContactRow = React.createClass({
 
     render(){
-        console.log(this.props.contact);
         return (
             <li className="media">
                 <img className="media-object"

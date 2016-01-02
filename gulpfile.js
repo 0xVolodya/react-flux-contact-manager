@@ -13,7 +13,6 @@ gulp.task('build', function () {
         'app/js/actions/*.js',
         'app/js/stores/*.js',
         'app/js/app.js'
-
     ])
     .pipe(concat('app.min.js'))
     .pipe(gulp.dest('app'))
