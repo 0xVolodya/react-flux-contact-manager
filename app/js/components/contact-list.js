@@ -9,6 +9,7 @@ var ContantList=React.createClass({
 
        return (
            <div>
+               <AddContactButton />
             <ul className="media-list contacts-container">
                 {c}
             </ul>

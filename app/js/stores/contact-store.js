@@ -1,6 +1,5 @@
 var ContactStore = (function ($, Dispatcher, ContactManagerConstants) {
     var dispatchToken,
-        _contacts = [],
         actionTypes = ContactManagerConstants.actionTypes,
         eventEmitter = $({}),
         CHANGE_EVENT = 'WOW';
@@ -47,7 +46,7 @@ var ContactStore = (function ($, Dispatcher, ContactManagerConstants) {
 
     function _createContactObject(contact) {
         return {
-            id: contact.id,
+            id: contact.id || Date.now(),
             name: contact.name,
             tel: contact.tel,
             email: contact.email,
@@ -69,7 +68,7 @@ var ContactStore = (function ($, Dispatcher, ContactManagerConstants) {
                 break;
             case actionTypes.DESTROY_CONTACT:
                 _contacts.forEach(function (contact, index) {
-                    console.log(action.id+ ' '+contact.id);
+                    console.log(action.id + ' ' + contact.id);
 
                     if (action.id === contact.id) {
                         console.log(_contacts.length);
@@ -82,34 +81,78 @@ var ContactStore = (function ($, Dispatcher, ContactManagerConstants) {
                 _currentId = _contacts[0].id;
                 emitChange();
                 break;
+            case actionTypes.CLICK_EDIT:
+                _currentViewType = VIEW_TYPES.EDIT;
+                emitChange();
+                break;
+            case actionTypes.CLICK_CANCEL:
+                if (_currentViewType === VIEW_TYPES.CREATE) {
+                    _currentViewType = VIEW_TYPES.LIST
+                } else {
+
+                    _currentViewType = VIEW_TYPES.VIEW;
+                }
+                emitChange();
+                break;
+            case actionTypes.CLICK_CONTACT:
+                _currentId = action.id;
+                _currentViewType = VIEW_TYPES.VIEW;
+                emitChange();
+                break;
+            case actionTypes.CLICK_SAVE:
+                _currentViewType = VIEW_TYPES.VIEW;
+                emitChange();
+                break;
+            case actionTypes.CLICK_CREATE:
+                _currentViewType = VIEW_TYPES.CREATE;
+                emitChange();
+                break;
+
+            case actionTypes.CREATE_CONTACT:
+                contact = _createContactObject(action.id);
+                _contacts.push(contact);
+                _currentId = contact.id;
+                emitChange();
+                break;
+            case actionTypes.UPDATE_CONTACT:
+                _contacts.forEach(function (contact, index) {
+                    if (contact.id === action.id.id) {
+                        contact.name = action.id.name;
+                        contact.email = action.id.email;
+                        contact.tel = action.id.tel;
+                    }
+                });
+                emitChange();
+                break;
 
 
         }
     });
     function emitChange() {
         eventEmitter.trigger(CHANGE_EVENT);
+        console.log(eventEmitter);
     }
 
     function addChangeListener(handler) {
         eventEmitter.on(CHANGE_EVENT, handler);
     }
 
-    function removeChangeListener(handler) {
-        eventEmitter.off(CHANGE_EVENT, handler);
-    }
-
     function getContacts() {
         return _contacts;
     }
 
+    function removeChangeListener(handler) {
+        eventEmitter.off(CHANGE_EVENT, handler);
+    }
+
     return {
         addChangeListener: addChangeListener,
-        removeChangeListener: removeChangeListener,
         emitChange: emitChange,
         getContacts: getContacts,
         dispatchToken: dispatchToken,
         getCurrentContact: getCurrentContact,
-        getCurrentViewType: getCurrentViewType
+        getCurrentViewType: getCurrentViewType,
+        removeChangeListener: removeChangeListener
 
     }
 }($, Dispatcher, ContactManagerConstants));

@@ -2,7 +2,7 @@ var ContactRow = React.createClass({
 
     render(){
         return (
-            <li className="media">
+            <li className="media" onClick={this._onClick}>
                 <img className="media-object"
                      src={ 'app/img/faces/' + this.props.contact.avatar}/>
 
@@ -12,5 +12,9 @@ var ContactRow = React.createClass({
                 </div>
             </li>
         )
+    },
+
+    _onClick(){
+        ActionCreators.clickContact(this.props.contact.id);
     }
-})
+});
